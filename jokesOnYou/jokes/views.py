@@ -1,10 +1,13 @@
+import concurrent.futures
 from django.shortcuts import render
+from threading import Thread
 from django.http import HttpResponse
+from urllib.parse import quote, unquote
+import requests
 
 
-def index(request):
-    import requests
-    import json
+def getJoke():
+    # https://rapidapi.com/translated/api/mymemory-translation-memory/endpoints - API
     url = "https://jokeapi-v2.p.rapidapi.com/joke/Any"
 
     querystring = {"idRange": "0-300",
@@ -17,7 +20,35 @@ def index(request):
 
     response = requests.get(
         url, headers=headers, params=querystring).json()
+
     setup = response['setup']
     delivery = response['delivery']
 
-    return HttpResponse(f'{setup}... {delivery}')
+    return setup, delivery
+
+
+def translateJoke(joke):
+    url = "https://translated-mymemory---translation-memory.p.rapidapi.com/api/get"
+    querystring = {"q": joke, "langpair": "en|pt",
+                   "onlyprivate": "0", "mt": "1"}
+
+    headers = {
+        'x-rapidapi-key': "89c0a9ae30msh9ce4247e0c650ffp11acb3jsnd84b2181f708",
+        'x-rapidapi-host': "translated-mymemory---translation-memory.p.rapidapi.com"
+    }
+
+    response = requests.get(
+        url, headers=headers, params=querystring).json()
+
+    return response['responseData']['translatedText']
+
+
+def index(request):
+    setup, delivery = getJoke()
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        setup_pt = executor.submit(translateJoke, setup).result()
+        delivery_pt = executor.submit(translateJoke, delivery).result()
+        # print(f'{setup_pt}\n{delivery_pt}')
+
+    return render(request, 'jokes/index.html', {'setup': setup_pt, 'delivery': delivery_pt})

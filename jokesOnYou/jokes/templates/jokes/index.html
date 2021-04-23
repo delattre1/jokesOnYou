@@ -1,0 +1,18 @@
+{% extends "jokes/base.html" %}
+{% load static %}
+
+{% block content %}
+<p>Como o Post-it, mas com outro verbo</p>
+
+<img class="menu-logo" src="{% static 'jokes/img/mini-joker.jpg' %}" />
+
+<p>
+{{setup}}
+</p>
+
+
+<p>
+{{delivery}}
+</p>
+
+{% endblock %}
