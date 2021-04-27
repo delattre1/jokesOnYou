@@ -11,7 +11,9 @@ export default function HomePage(props) {
 
 
     return (
+        <div className="center">
         <h1> YAUU page HEHEHE {joke} </h1>
+        </div>
     );
 }
 

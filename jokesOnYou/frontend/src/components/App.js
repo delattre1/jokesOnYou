@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {render} from "react-dom";
 import HomePage from "./HomePage";
 import TopBar from "./TopBar";
+import JokeContainer from "./JokeContainer";
+
 
 export default class App extends Component {
     constructor(props) {
@@ -9,9 +11,9 @@ export default class App extends Component {
     }
     render() {
         return (
-            <div className="center">
+            <div >
                 <TopBar />
-                <HomePage />
+                <JokeContainer />
             </div>
         );
     }
