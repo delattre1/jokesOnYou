@@ -72,3 +72,23 @@ def api_joke(request):
     serialized_joke = JokeSerializer(joke)
 
     return Response(serialized_joke.data)
+
+
+@api_view(['GET', 'POST'])
+def api_favorites(request):
+    if request.method == 'POST':
+        new_fav_data = request.data
+        print(f'data post: {new_fav_data}')
+        new_fav = Joke(setup=new_fav_data['setup'],
+                       delivery=new_fav_data['delivery'])
+        new_fav.save()
+
+    all_favs = Joke.objects.order_by('created_at')
+    tamanho = len(all_favs)
+    try:
+        last_three = all_favs[tamanho - 3:]
+        serialized_joke = JokeSerializer(last_three, many=True)
+    except:
+        serialized_joke = JokeSerializer(all_favs, many=True)
+
+    return Response(serialized_joke.data)
