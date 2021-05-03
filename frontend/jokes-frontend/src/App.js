@@ -3,7 +3,6 @@ import "./App.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import React from 'react';
-import { Button } from 'reactstrap';
 import FavoriteJokes from "./components/FavoriteJokes"
 
 function App() {
@@ -36,11 +35,9 @@ function App() {
       
       <div className="mainContainer">
         <Joke title={notes.setup}>{notes.delivery}</Joke>
-        <Button outline color="primary">Save Joke</Button>
-        <img className="jokeImg" src="/mini-joker.jpg" alt="" />
         <FavoriteJokes favJokes={favs}></FavoriteJokes>
+        <img className="jokeImg" src="/mini-joker.jpg" alt="" />
       </div>   
-
     </div>
   );
 }

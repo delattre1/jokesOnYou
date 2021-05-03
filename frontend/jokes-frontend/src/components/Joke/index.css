@@ -1,6 +1,14 @@
 body {
     background-color: #15172b;
 }
+
+.containerMainJoke {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .card {
   width: 200px;
   display: flex;
@@ -31,7 +39,7 @@ body {
 }
 
 .jokeImg {
-    margin-top: 1rem;
+    margin: 1rem;
     width: 35%;
     min-width: 20rem;
 }
