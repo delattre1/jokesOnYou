@@ -4,9 +4,21 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import React from 'react';
 import { Button } from 'reactstrap';
+import FavoriteJokes from "./components/FavoriteJokes"
 
 function App() {
+
   const [notes, setNotes] = useState([]);
+  const [favs,  setFavs]  = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://127.0.0.1:8000/api/favorites/')
+      .then((res) => {
+        setFavs(res.data)
+      })
+    }, []);
+
 
   useEffect(() => {
     axios
@@ -15,18 +27,18 @@ function App() {
   }, []);
 
   console.log(notes);
-
   return (
     <div className="App">
         <div className="appbar">
             <img className="logo_joker" src="/logo_joker.png" alt="" />
             <p className="top-bar-text">Timão piadas mesmo!</p>
         </div>
-
+      
       <div className="mainContainer">
         <Joke title={notes.setup}>{notes.delivery}</Joke>
         <Button outline color="primary">Save Joke</Button>
         <img className="jokeImg" src="/mini-joker.jpg" alt="" />
+        <FavoriteJokes favJokes={favs}></FavoriteJokes>
       </div>   
 
     </div>
