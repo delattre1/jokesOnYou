@@ -74,7 +74,7 @@ def api_favorites(request):
                        delivery=new_fav_data['delivery'], joke_id=new_fav_data['joke_id'])
         new_fav.save()
 
-    all_favs = Joke.objects.order_by('created_at')
+    all_favs = Joke.objects.all()
     tamanho = len(all_favs)
     try:
         last_three = all_favs[tamanho - 3:]
