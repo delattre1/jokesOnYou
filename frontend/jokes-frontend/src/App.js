@@ -4,7 +4,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import React from 'react';
 import FavoriteJokes from "./components/FavoriteJokes"
-import { Button  } from 'reactstrap';
 
 
 function App() {
@@ -48,7 +47,7 @@ function App() {
       
       <div className="mainContainer">
         <Joke title={joke.setup}>{joke.delivery}</Joke>
-        <Button onClick={saveJoke} outline color="blue">Save Joke</Button>
+        <button onClick={saveJoke} >Save Joke</button>
 
         <FavoriteJokes favJokes={favs}></FavoriteJokes>
         <img className="jokeImg" src="/mini-joker.jpg" alt="" />
