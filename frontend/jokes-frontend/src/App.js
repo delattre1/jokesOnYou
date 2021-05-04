@@ -6,16 +6,21 @@ import React from 'react';
 import FavoriteJokes from "./components/FavoriteJokes"
 import { Button  } from 'reactstrap';
 
+
 function App() {
   function saveJoke() {
     axios
-      .post('http://127.0.0.1:8000/api/favorites/', notes)
+      .post('http://127.0.0.1:8000/api/favorites/', joke)
       .then((res) => {
         setFavs(res.data)
       })
+
+    axios
+      .get("http://localhost:8000/api/joke/")
+      .then((res) => setJoke(res.data));
   };
 
-  const [notes, setNotes] = useState([]);
+  const [joke, setJoke] = useState([]);
   const [favs,  setFavs]  = useState([]);
 
   useEffect(() => {
@@ -30,10 +35,10 @@ function App() {
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/joke/")
-      .then((res) => setNotes(res.data));
+      .then((res) => setJoke(res.data));
   }, []);
 
-  console.log(notes);
+  console.log(joke);
   return (
     <div className="App">
         <div className="appbar">
@@ -42,7 +47,7 @@ function App() {
         </div>
       
       <div className="mainContainer">
-        <Joke title={notes.setup}>{notes.delivery}</Joke>
+        <Joke title={joke.setup}>{joke.delivery}</Joke>
         <Button onClick={saveJoke} outline color="blue">Save Joke</Button>
 
         <FavoriteJokes favJokes={favs}></FavoriteJokes>
