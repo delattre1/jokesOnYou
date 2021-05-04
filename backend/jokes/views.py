@@ -29,8 +29,9 @@ def getJoke():
 
     setup = response['setup']
     delivery = response['delivery']
+    joke_id = response['id']
 
-    return setup, delivery
+    return setup, delivery, joke_id
 
 
 def translateJoke(joke):
@@ -49,26 +50,16 @@ def translateJoke(joke):
     return response['responseData']['translatedText']
 
 
-def index(request):
-    setup, delivery = getJoke()
-
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        setup_pt = executor.submit(translateJoke, setup).result()
-        delivery_pt = executor.submit(translateJoke, delivery).result()
-
-    return render(request, 'jokes/index.html', {'setup': setup_pt, 'delivery': delivery_pt})
-
-
 @api_view(['GET', 'POST'])
 def api_joke(request):
 
-    setup, delivery = getJoke()
+    setup, delivery, joke_id = getJoke()
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         setup_pt = executor.submit(translateJoke, setup).result()
         delivery_pt = executor.submit(translateJoke, delivery).result()
 
-    joke = Joke(setup=setup_pt, delivery=delivery_pt)
+    joke = Joke(setup=setup_pt, delivery=delivery_pt, joke_id=joke_id)
     serialized_joke = JokeSerializer(joke)
 
     return Response(serialized_joke.data)
@@ -80,7 +71,7 @@ def api_favorites(request):
         new_fav_data = request.data
         print(f'data post: {new_fav_data}')
         new_fav = Joke(setup=new_fav_data['setup'],
-                       delivery=new_fav_data['delivery'])
+                       delivery=new_fav_data['delivery'], joke_id=new_fav_data['joke_id'])
         new_fav.save()
 
     all_favs = Joke.objects.order_by('created_at')
