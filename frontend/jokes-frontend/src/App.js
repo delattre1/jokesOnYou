@@ -4,8 +4,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import React from 'react';
 import FavoriteJokes from "./components/FavoriteJokes"
+import { Button  } from 'reactstrap';
 
 function App() {
+  function saveJoke() {
+    axios
+      .post('http://127.0.0.1:8000/api/favorites/', notes)
+      .then((res) => {
+        setFavs(res.data)
+      })
+  };
 
   const [notes, setNotes] = useState([]);
   const [favs,  setFavs]  = useState([]);
@@ -35,6 +43,8 @@ function App() {
       
       <div className="mainContainer">
         <Joke title={notes.setup}>{notes.delivery}</Joke>
+        <Button onClick={saveJoke} outline color="blue">Save Joke</Button>
+
         <FavoriteJokes favJokes={favs}></FavoriteJokes>
         <img className="jokeImg" src="/mini-joker.jpg" alt="" />
       </div>   

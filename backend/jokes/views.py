@@ -29,8 +29,9 @@ def getJoke():
 
     setup = response['setup']
     delivery = response['delivery']
+    joke_id = response['id']
 
-    return setup, delivery
+    return setup, delivery, joke_id
 
 
 def translateJoke(joke):
@@ -47,16 +48,6 @@ def translateJoke(joke):
         url, headers=headers, params=querystring).json()
 
     return response['responseData']['translatedText']
-
-
-def index(request):
-    setup, delivery = getJoke()
-
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        setup_pt = executor.submit(translateJoke, setup).result()
-        delivery_pt = executor.submit(translateJoke, delivery).result()
-
-    return render(request, 'jokes/index.html', {'setup': setup_pt, 'delivery': delivery_pt})
 
 
 @api_view(['GET', 'POST'])
