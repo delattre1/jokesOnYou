@@ -1,3 +1,3 @@
-release: python manage.py migrate --fake
-web: gunicorn getit.wsgi --log-file -
+release: python manage.py migrate 
+web: gunicorn jokesOnYou.wsgi --log-file -
 
